@@ -6,8 +6,9 @@ var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, '', {preload: p
 
 function preload() {
 
-    game.load.image('ball', '../assets/img/ellipse.png');
-    game.load.image('block', '../assets/img/polygon.png');
+    game.load.image('ball', 'assets/img/ellipse.png');
+    game.load.image('block', 'assets/img/polygon.png');
+    game.load.image('crazy_ball', 'assets/img/ellipse.png');
 
 }
 
@@ -38,6 +39,8 @@ function setTimeSec(){
     var style = { font: "26px Arial", fill: "#833", weight: "bold" };
     timeText = game.add.text(GAME_WIDTH - 50, 10, ''+time, style);
 }
+
+/*--- SECONDS ---*/
 setInterval(function(){
     time++;
     timeText.text = ''+time;
@@ -45,6 +48,7 @@ setInterval(function(){
 
 function create() {
     game.stage.backgroundColor = '#f4f4e8';
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     setBlocks();
     setPoints();
     setTimeSec();
@@ -59,7 +63,7 @@ function update() {
 
 function checkFallingBall(){
     for(var i=0; i<balls.length; i++){
-        if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT){
+        if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT-1){
             alert('Game is Finished');
             game.destroy();
         }
@@ -87,13 +91,30 @@ setInterval(function () {
     var ball = game.add.sprite(getRandomInt(0, 355), -45, 'ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = 0;
-    ball.body.velocity.y = getRandomInt(50, 300);
+    ball.body.velocity.y = getRandomInt(50+time*4, 100+time*10);
     ball.inputEnabled = true;
     ball.events.onInputDown.add(ballClicked, ball);
 
     balls.push(ball);
 
- }, 400)
+ }, 1000)
+
+/*------ crazy balls falling ------*/
+setInterval(function () {
+    var ball = game.add.sprite(getRandomInt(0, 355), -45, 'crazy_ball');
+    game.physics.enable(ball, Phaser.Physics.ARCADE);
+    ball.body.velocity.x = getRandomInt(0, 400);
+    ball.body.velocity.y = getRandomInt(200, 350+time*2);
+
+    ball.body.collideWorldBounds = true;
+    ball.body.bounce.setTo(1, 1);
+
+    ball.inputEnabled = true;
+    ball.events.onInputDown.add(ballClicked, ball);
+
+    balls.push(ball);
+
+ }, 1500)
 
 
 /*------ blocks falling ------*/
@@ -102,13 +123,13 @@ setInterval(function () {
     var block = game.add.sprite(67*c, -45, 'block');
     game.physics.enable(block, Phaser.Physics.ARCADE);
     block.body.velocity.x = 0;
-    block.body.velocity.y = getRandomInt(150, 200);
+    block.body.velocity.y = getRandomInt(50, 200);
     block.inputEnabled = true;
     block.events.onInputDown.add(fallingBlockClicked, block);
 
     fallingBlocks.push(block);
     blocks.push(block);
-}, 1500)
+}, 2000)
 
 function ballClicked() {
     this.kill();
