@@ -2,20 +2,7 @@
  * Created by Константин on 12.01.2015.
  */
 
-/*-- CONSTANTS ---*/
-var gameWidth = 400;
-var gameHeight = 640;
-
-var blockWidth = 65;
-var blockHeight = 30;
-var blockSpace = 2;
-
-var ballWidth = 45;
-var ballHeight = 45;
-//var initialBlockCount = 6;
-
-
-var game = new Phaser.Game(400, 640, Phaser.AUTO, '', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload() {
 
@@ -28,23 +15,43 @@ var blocks = [];
 var balls = [];
 var fallingBlocks = [];
 
+var points;
+var pointsText;
+var time;
+var timeText;
+
 function setBlocks() {
 
-    for (var i = 0; i < gameWidth; i += blockWidth + blockSpace) {
-        var block = game.add.sprite(i, gameHeight - blockHeight, 'block');
+    for (var i = 0; i < GAME_WIDTH; i += BLOCK_WIDTH + BLOCK_SPACE) {
+        var block = game.add.sprite(i, GAME_HEIGHT - BLOCK_HEIGHT, 'block');
         game.physics.enable(block, Phaser.Physics.ARCADE);
         blocks.push(block);
     }
 }
+function setPoints(){
+    points = INITIAL_POINTS;
+    var style = { font: "26px Arial", fill: "#353", weight: "bold" };
+    pointsText = game.add.text(10, 10, ''+points, style);
+}
+function setTimeSec(){
+    time = 0;
+    var style = { font: "26px Arial", fill: "#833", weight: "bold" };
+    timeText = game.add.text(GAME_WIDTH - 50, 10, ''+time, style);
+}
+setInterval(function(){
+    time++;
+    timeText.text = ''+time;
+}, 999);
 
 function create() {
     game.stage.backgroundColor = '#f4f4e8';
     setBlocks();
+    setPoints();
+    setTimeSec();
 }
 
 function update() {
-    //console.log(bottom);
-    
+
     checkFallingBall();
     
     checkFallingBlock();
@@ -52,7 +59,7 @@ function update() {
 
 function checkFallingBall(){
     for(var i=0; i<balls.length; i++){
-        if(balls[i].y > gameHeight - ballHeight){
+        if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT){
             alert('Game is Finished');
             game.destroy();
         }
@@ -64,19 +71,15 @@ function checkFallingBall(){
 
 function checkFallingBlock(){
     for(var i=0; i<fallingBlocks.length; i++){
-        if(fallingBlocks[i].y > gameHeight - blockHeight - 2){
+        if(fallingBlocks[i].y > GAME_HEIGHT - BLOCK_HEIGHT - 2){
             fallingBlocks[i].body.velocity.y = 0;
-            fallingBlocks[i].y = gameHeight - blockHeight;
+            fallingBlocks[i].y = GAME_HEIGHT - BLOCK_HEIGHT;
         }
 
         for(var j=0; j<blocks.length; j++){
             game.physics.arcade.collide(fallingBlocks[i], blocks[j], fallingBlockCollide, null, this);
         }
     }
-}
-
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /*------ balls falling ------*/
@@ -109,9 +112,13 @@ setInterval(function () {
 
 function ballClicked() {
     this.kill();
+    points += 5;
+    pointsText.text = ''+points;
 }
 function fallingBlockClicked() {
     this.kill();
+    points -= 2;
+    pointsText.text = ''+points;
 }
 
 

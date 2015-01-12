@@ -1,0 +1,17 @@
+
+var GAME_WIDTH = 400;
+var GAME_HEIGHT = 640;
+
+var BLOCK_WIDTH = 65;
+var BLOCK_HEIGHT = 30;
+var BLOCK_SPACE = 2;
+
+var BALL_WIDTH = 45;
+var BALL_HEIGHT = 45;
+
+
+
+/*---- POINTS ---*/
+var INITIAL_POINTS = 0;
+var POINTS_FOR_BALL = 5;
+var POINTS_FOR_BLOCK = -2;
