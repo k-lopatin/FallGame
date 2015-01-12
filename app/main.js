@@ -15,16 +15,7 @@ function preload() {
 }
 
 function create() {
-    var ball = game.add.sprite(game.world.centerX, 0, 'ball');
-    game.physics.enable(ball, Phaser.Physics.ARCADE);
-    ball.body.velocity.x = 0;
-    ball.body.velocity.y = 50;
-}
 
-function releaseBall() {
-       /* ball.body.velocity.x = 1;
-        ball.body.velocity.y = 10;*/
-    ball.velocity.y = 10;
 }
 
 function getRandomInt(min, max)
@@ -32,11 +23,15 @@ function getRandomInt(min, max)
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
-
 setInterval( function() {
- var ball = game.add.sprite(getRandomInt(0, 370), 0, 'ball');
+    var ball = game.add.sprite(getRandomInt(0, 340), 0, 'ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = 0;
-    ball.body.velocity.y = getRandomInt(50, 100);
-}, 1500)
+    ball.body.velocity.y = getRandomInt(50, 300);
+    ball.inputEnabled = true;
+    ball.events.onInputDown.add(ballClicked, ball);
+}, 400)
+
+function ballClicked(){
+    this.kill();
+}
