@@ -33,6 +33,8 @@ setInterval( function() {
     ball.body.velocity.x = 0;
     ball.body.velocity.y = getRandomInt(50, 300);
     ball.inputEnabled = true;
+    ball.body.collideWorldBounds = true;
+    ball.body.bounce.setTo(1, 1);
     ball.events.onInputDown.add(ballClicked, ball);
 }, 400)
 
