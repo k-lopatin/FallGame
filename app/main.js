@@ -8,7 +8,7 @@ function preload() {
 
     game.load.image('ball', 'assets/img/ellipse.png');
     game.load.image('block', 'assets/img/polygon.png');
-    game.load.image('crazy_ball', 'assets/img/ellipse.png');
+    game.load.image('crazy_ball', 'assets/img/crazy.png');
 
 }
 
