@@ -133,7 +133,7 @@ setInterval(function () {
 }, 2000)
 
 function ballClicked() {
-    this.kill();
+    killBall(this);
     points += 5;
     pointsText.text = ''+points;
 }
