@@ -140,14 +140,22 @@ setInterval(function () {
 
 
 setInterval(function(){
-    var x = getRandomInt(0, GAME_WIDTH);
+    var x = getRandomInt(60, GAME_WIDTH-60);
     var y = getRandomInt(0, maxBlockY-60);
     var timestop = game.add.sprite(x, y, 'stop_balls');
-
     timestop.inputEnabled = true;
     timestop.events.onInputDown.add(timeStopClicked, timestop);
+    killTimeStopStatic(timestop);
 
 }, 5500)
+
+function killTimeStopStatic(t) {
+    setTimeout(function () {
+        killTimeStop(t);
+        points -= 2;
+        pointsText.text = '' + points;
+    }, 2500)
+}
 
 function ballClicked() {
     killBall(this);
@@ -159,18 +167,37 @@ function fallingBlockClicked() {
     points -= 2;
     pointsText.text = ''+points;
 }
+function StartBallsMove(){
+    setTimeout(function(){
+        for(var i=0; i<balls.length; i++){
+            switch(balls[i].key)
+            {
+                case 'crazy_ball':
+                    balls[i].body.velocity.x = getRandomInt(0, 400);
+                    balls[i].body.velocity.y = getRandomInt(200, 350+time*2);
+                    break;
+                case 'ball' :
+                    balls[i].body.velocity.x = 0;
+                    balls[i].body.velocity.y = getRandomInt(50, 200);
+                    break;
+            }
+
+        }
+    }, 2500)
+}
+
 function timeStopClicked() {
     for(var i=0; i<balls.length; i++){
         balls[i].body.velocity.x = 0;
         balls[i].body.velocity.y = 0;
     }
     killTimeStop(this);
+    StartBallsMove();
 }
 
-
 function blockCollide(ball, block) {
-    ball.kill();
-    block.kill();
+            ball.kill();
+            block.kill();
 }
 
 function fallingBlockCollide(fallingBlock, block) {
