@@ -10,6 +10,8 @@ function preload() {
     game.load.image('block', 'assets/img/polygon.png');
     game.load.image('crazy_ball', 'assets/img/crazy.png');
 
+    game.load.image('stop_balls', 'assets/img/time_ellipse.png');
+
 }
 
 var blocks = [];
@@ -20,6 +22,8 @@ var points;
 var pointsText;
 var time;
 var timeText;
+
+var maxBlockY;
 
 function setBlocks() {
 
@@ -52,6 +56,8 @@ function create() {
     setBlocks();
     setPoints();
     setTimeSec();
+
+    maxBlockY = GAME_HEIGHT - BLOCK_HEIGHT;
 }
 
 function update() {
@@ -132,6 +138,17 @@ setInterval(function () {
     blocks.push(block);
 }, 2000)
 
+
+setInterval(function(){
+    var x = getRandomInt(0, GAME_WIDTH);
+    var y = getRandomInt(0, maxBlockY-60);
+    var timestop = game.add.sprite(x, y, 'stop_balls');
+
+    timestop.inputEnabled = true;
+    timestop.events.onInputDown.add(timeStopClicked, timestop);
+
+}, 5500)
+
 function ballClicked() {
     killBall(this);
     points += 5;
@@ -142,18 +159,30 @@ function fallingBlockClicked() {
     points -= 2;
     pointsText.text = ''+points;
 }
+function timeStopClicked() {
+    for(var i=0; i<balls.length; i++){
+        balls[i].body.velocity.x = 0;
+        balls[i].body.velocity.y = 0;
+    }
+    killTimeStop(this);
+}
 
 
 function blockCollide(ball, block) {
-    console.log('test');
     ball.kill();
     block.kill();
 }
 
 function fallingBlockCollide(fallingBlock, block) {
-    console.log('oops');
     fallingBlock.body.velocity.y = 0;
     block.body.velocity.y = 0;
+
+
+    /*-- check if height of blocks wall is higher ---*/
+    if(fallingBlock.y < maxBlockY){
+        maxBlockY = fallingBlock.y;
+    }
+
     removeBlockFromFalling(fallingBlock);
 }
 
