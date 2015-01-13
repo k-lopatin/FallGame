@@ -146,8 +146,14 @@ setInterval(function(){
 
     timestop.inputEnabled = true;
     timestop.events.onInputDown.add(timeStopClicked, timestop);
+    setTimeout(function(){
+        killTimeStop(timestop);
+        points -= 2;
+        pointsText.text = ''+points;
+    }, 2500)
 
 }, 5500)
+
 
 function ballClicked() {
     killBall(this);
@@ -165,12 +171,27 @@ function timeStopClicked() {
         balls[i].body.velocity.y = 0;
     }
     killTimeStop(this);
+    setTimeout(function(){
+        for(var i=0; i<balls.length; i++){
+            switch(balls[i].key)
+            {
+                case 'crazy_ball':
+                    balls[i].body.velocity.x = getRandomInt(0, 400);
+                    balls[i].body.velocity.y = getRandomInt(200, 350+time*2);
+                    break;
+                case 'ball' :
+                    balls[i].body.velocity.x = 0;
+                    balls[i].body.velocity.y = getRandomInt(50, 200);
+                    break;
+            }
+
+        }
+    }, 2500)
 }
 
-
 function blockCollide(ball, block) {
-    ball.kill();
-    block.kill();
+            ball.kill();
+            block.kill();
 }
 
 function fallingBlockCollide(fallingBlock, block) {
