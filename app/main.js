@@ -2,6 +2,9 @@
  * Created by Константин on 12.01.2015.
  */
 
+GAME_WIDTH = window.innerWidth;
+GAME_HEIGHT = window.innerHeight;
+
 var game = new Phaser.Game(GAME_WIDTH, GAME_HEIGHT, Phaser.AUTO, '', {preload: preload, create: create, update: update});
 
 function preload() {
@@ -96,7 +99,7 @@ function checkFallingBlock(){
 
 /*------ balls falling ------*/
 setInterval(function () {
-    var ball = game.add.sprite(getRandomInt(0, 355), -45, 'ball');
+    var ball = game.add.sprite(getRandomInt(0, GAME_WIDTH - BALL_WIDTH - 1), -BALL_HEIGHT, 'ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = 0;
     ball.body.velocity.y = getRandomInt(50+time*4, 100+time*10);
@@ -109,7 +112,7 @@ setInterval(function () {
 
 /*------ crazy balls falling ------*/
 setInterval(function () {
-    var ball = game.add.sprite(getRandomInt(0, 355), -45, 'crazy_ball');
+    var ball = game.add.sprite(getRandomInt(0, GAME_WIDTH - BALL_WIDTH - 1), -BALL_HEIGHT, 'crazy_ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = getRandomInt(0, 400);
     ball.body.velocity.y = getRandomInt(200, 350+time*2);

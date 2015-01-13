@@ -27,4 +27,22 @@ function bombBonus(){
     var bomb = game.add.sprite(x, y, 'bomb');
     bomb.inputEnabled = true;
     bomb.events.onInputDown.add(bombClicked, bomb);
+    killBombStatic(bomb);
+}
+
+
+
+function killTimeStopStatic(t) {
+    setTimeout(function () {
+        killTimeStop(t);
+        points -= 2;
+        pointsText.text = '' + points;
+    }, 2500)
+}
+function killBombStatic(bomb) {
+    setTimeout(function () {
+        bomb.kill();
+        points -= 2;
+        pointsText.text = '' + points;
+    }, 2500)
 }
