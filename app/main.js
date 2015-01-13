@@ -78,6 +78,7 @@ function checkFallingBlock(){
         if(fallingBlocks[i].y > GAME_HEIGHT - BLOCK_HEIGHT - 2){
             fallingBlocks[i].body.velocity.y = 0;
             fallingBlocks[i].y = GAME_HEIGHT - BLOCK_HEIGHT;
+            removeBlockFromFalling(fallingBlocks[i]);
         }
 
         for(var j=0; j<blocks.length; j++){
@@ -153,6 +154,17 @@ function fallingBlockCollide(fallingBlock, block) {
     console.log('oops');
     fallingBlock.body.velocity.y = 0;
     block.body.velocity.y = 0;
+    removeBlockFromFalling(fallingBlock);
+}
+
+function removeBlockFromFalling(block){
+    block.events.onInputDown.removeAll();
+    for(var i=0; i<fallingBlocks.length; i++){
+        if(fallingBlocks[i] == block){
+            fallingBlocks[i] == null;
+            return;
+        }
+    }
 }
 
 /*
