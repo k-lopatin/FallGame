@@ -11,6 +11,7 @@ function preload() {
     game.load.image('crazy_ball', 'assets/img/crazy.png');
 
     game.load.image('stop_balls', 'assets/img/time_ellipse.png');
+    game.load.image('bomb', 'assets/img/bomb.png');
 
 }
 
@@ -139,16 +140,6 @@ setInterval(function () {
 }, 2000)
 
 
-setInterval(function(){
-    var x = getRandomInt(60, GAME_WIDTH-60);
-    var y = getRandomInt(0, maxBlockY-60);
-    var timestop = game.add.sprite(x, y, 'stop_balls');
-    timestop.inputEnabled = true;
-    timestop.events.onInputDown.add(timeStopClicked, timestop);
-    killTimeStopStatic(timestop);
-
-}, 5500)
-
 function killTimeStopStatic(t) {
     setTimeout(function () {
         killTimeStop(t);
@@ -167,6 +158,26 @@ function fallingBlockClicked() {
     points -= 2;
     pointsText.text = ''+points;
 }
+
+function timeStopClicked() {
+    for(var i=0; i<balls.length; i++){
+        balls[i].body.velocity.x = 0;
+        balls[i].body.velocity.y = 0;
+    }
+    killTimeStop(this);
+    StartBallsMove();
+}
+
+function bombClicked() {
+    points += 12;
+    pointsText.text = ''+points;
+    killBomb(this);
+    for(var i=0; i<balls.length; i++){
+        killBall(balls[i]);
+    }
+}
+
+
 function StartBallsMove(){
     setTimeout(function(){
         for(var i=0; i<balls.length; i++){
@@ -186,14 +197,7 @@ function StartBallsMove(){
     }, 2500)
 }
 
-function timeStopClicked() {
-    for(var i=0; i<balls.length; i++){
-        balls[i].body.velocity.x = 0;
-        balls[i].body.velocity.y = 0;
-    }
-    killTimeStop(this);
-    StartBallsMove();
-}
+
 
 function blockCollide(ball, block) {
             ball.kill();

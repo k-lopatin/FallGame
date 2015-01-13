@@ -24,3 +24,18 @@ function killTimeStop(timestop){
 		}
 	}, 4)
 }
+
+function killBomb(bomb){
+	var killInt = setInterval(function(){
+		bomb.width = bomb.width-1;
+		bomb.height = bomb.height-1;
+		if(bomb.width < 3 || bomb.height < 3){
+			bomb.kill();
+			clearInterval(killInt);
+			game.stage.backgroundColor = '#f4f4e8';
+			return;
+		}
+		game.stage.backgroundColor = '#f45555';
+	}, 3)
+	
+}

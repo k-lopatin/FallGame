@@ -9,6 +9,9 @@ var BLOCK_SPACE = 2;
 var BALL_WIDTH = 45;
 var BALL_HEIGHT = 45;
 
+var TIMEOUT_WIDTH = 55;
+var TIMEOUT_HEIGHT = 55;
+
 
 
 /*---- POINTS ---*/
