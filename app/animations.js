@@ -39,3 +39,28 @@ function killBomb(bomb){
 	}, 3)
 	
 }
+
+function killLifeBonus(life){
+	game.stage.backgroundColor = '#55ff55';
+	life.kill();
+	setTimeout(function(){
+		game.stage.backgroundColor = '#f4f4e8';
+	}, 90);
+	
+}
+
+
+function checkLifeAnimation(){
+	isStop = true;
+	game.stage.backgroundColor = '#000';
+
+	killAllSprites(balls);
+
+	lifes--;
+    lifesText.text = ''+lifes;
+
+	setTimeout(function(){
+		isStop = false;
+		game.stage.backgroundColor = '#f4f4e8';
+	}, 150);
+}

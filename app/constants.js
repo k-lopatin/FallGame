@@ -12,6 +12,12 @@ var BALL_HEIGHT = 45;
 var TIMEOUT_WIDTH = 55;
 var TIMEOUT_HEIGHT = 55;
 
+var BOMB_WIDTH = 55;
+var BOMB_HEIGHT = 55;
+
+var LIFE_WIDTH = 50;
+var LIFE_HEIGHT = 50;
+
 
 
 /*---- POINTS ---*/

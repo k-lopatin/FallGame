@@ -15,6 +15,7 @@ function preload() {
 
     game.load.image('stop_balls', 'assets/img/time_ellipse.png');
     game.load.image('bomb', 'assets/img/bomb.png');
+    game.load.image('life', 'assets/img/heart.png');
 
     game.load.image('restart', 'assets/img/reload.png');
 
@@ -29,6 +30,9 @@ var points;
 var pointsText;
 var time;
 var timeText;
+
+var isStop = false;
+
 
 var maxBlockY;
 
@@ -51,6 +55,15 @@ function setTimeSec(){
     timeText = game.add.text(GAME_WIDTH - 50, 10, ''+time, style);
 }
 
+function setLifes(){
+    var style = { font: "26px Arial", fill: "#353", weight: "bold" };
+    lifesText = game.add.text(GAME_WIDTH/2, 10, ''+lifes, style);
+
+    var lifesPic = game.add.sprite(GAME_WIDTH/2 - 28, 13, 'life');
+    lifesPic.width = 24;
+    lifesPic.height = 24;
+}
+
 /*--- SECONDS ---*/
 var timeInterval = setInterval(function(){
     time++;
@@ -60,14 +73,17 @@ var timeInterval = setInterval(function(){
 function create() {
     game.stage.backgroundColor = '#f4f4e8';
     game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+
     setBlocks();
     setPoints();
     setTimeSec();
+    setLifes();
 
     maxBlockY = GAME_HEIGHT - BLOCK_HEIGHT;
 }
 
 function update() {
+    if(isStop) return;
 
     checkFallingBall();
     
@@ -76,8 +92,10 @@ function update() {
 
 function checkFallingBall(){
     for(var i=0; i<balls.length; i++){
-        if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT-1){
-            finishGame();
+        if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT - 1){
+            console.log(balls[i].y);
+            balls[i].y= 0;
+            checkLifes();
             //game.destroy();
         }
         for(var j=0; j<blocks.length; j++){
@@ -159,23 +177,7 @@ function fallingBlockClicked() {
     pointsText.text = ''+points;
 }
 
-function timeStopClicked() {
-    for(var i=0; i<balls.length; i++){
-        balls[i].body.velocity.x = 0;
-        balls[i].body.velocity.y = 0;
-    }
-    killTimeStop(this);
-    StartBallsMove();
-}
 
-function bombClicked() {
-    points += 12;
-    pointsText.text = ''+points;
-    killBomb(this);
-    for(var i=0; i<balls.length; i++){
-        killBall(balls[i]);
-    }
-}
 
 
 function StartBallsMove(){
@@ -227,8 +229,18 @@ function removeBlockFromFalling(block){
     }
 }
 
+function checkLifes(){
+    console.log('test');
+    
+    checkLifeAnimation();
+    if(lifes == 0){
+        finishGame();
+    } 
+}
 
 function finishGame(){
+
+    isStop = true;
 
     killAllSprites( balls );
     killAllSprites( blocks );
