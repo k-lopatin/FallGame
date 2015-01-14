@@ -16,11 +16,14 @@ function preload() {
     game.load.image('stop_balls', 'assets/img/time_ellipse.png');
     game.load.image('bomb', 'assets/img/bomb.png');
 
+    game.load.image('restart', 'assets/img/reload.png');
+
 }
 
 var blocks = [];
 var balls = [];
 var fallingBlocks = [];
+
 
 var points;
 var pointsText;
@@ -49,7 +52,7 @@ function setTimeSec(){
 }
 
 /*--- SECONDS ---*/
-setInterval(function(){
+var timeInterval = setInterval(function(){
     time++;
     timeText.text = ''+time;
 }, 999);
@@ -74,8 +77,8 @@ function update() {
 function checkFallingBall(){
     for(var i=0; i<balls.length; i++){
         if(balls[i].y > GAME_HEIGHT - BALL_HEIGHT-1){
-            alert('Game is Finished');
-            game.destroy();
+            finishGame();
+            //game.destroy();
         }
         for(var j=0; j<blocks.length; j++){
             game.physics.arcade.collide(balls[i], blocks[j], blockCollide, null, this);
@@ -98,7 +101,7 @@ function checkFallingBlock(){
 }
 
 /*------ balls falling ------*/
-setInterval(function () {
+var ballsInterval = setInterval(function () {
     var ball = game.add.sprite(getRandomInt(0, GAME_WIDTH - BALL_WIDTH - 1), -BALL_HEIGHT, 'ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = 0;
@@ -111,7 +114,7 @@ setInterval(function () {
  }, 1000)
 
 /*------ crazy balls falling ------*/
-setInterval(function () {
+var crazyBallsInterval = setInterval(function () {
     var ball = game.add.sprite(getRandomInt(0, GAME_WIDTH - BALL_WIDTH - 1), -BALL_HEIGHT, 'crazy_ball');
     game.physics.enable(ball, Phaser.Physics.ARCADE);
     ball.body.velocity.x = getRandomInt(0, 400);
@@ -129,7 +132,7 @@ setInterval(function () {
 
 
 /*------ blocks falling ------*/
-setInterval(function () {
+var blocksInterval = setInterval(function () {
     var c = getRandomInt(0, 5)
     var block = game.add.sprite(67*c, -45, 'block');
     game.physics.enable(block, Phaser.Physics.ARCADE);
@@ -143,13 +146,7 @@ setInterval(function () {
 }, 2000)
 
 
-function killTimeStopStatic(t) {
-    setTimeout(function () {
-        killTimeStop(t);
-        points -= 2;
-        pointsText.text = '' + points;
-    }, 2500)
-}
+
 
 function ballClicked() {
     killBall(this);
@@ -228,6 +225,33 @@ function removeBlockFromFalling(block){
             return;
         }
     }
+}
+
+
+function finishGame(){
+
+    killAllSprites( balls );
+    killAllSprites( blocks );
+    killAllSprites( fallingBlocks );
+    killAllSprites( bonuses );
+
+    clearInterval( timeInterval );
+    clearInterval( ballsInterval );
+    clearInterval( crazyBallsInterval );
+    clearInterval( blocksInterval );
+    clearInterval( bonusInterval );
+
+    checkRecordTime(time);
+    checkRecordPoints(points);
+
+    var restart = game.add.sprite(GAME_WIDTH/2, GAME_HEIGHT/2, 'restart');
+    restart.anchor.setTo(0.5, 0.5);
+    restart.inputEnabled = true;
+    restart.events.onInputDown.add(restartClicked, this);
+}
+
+function restartClicked(){
+    location.reload();
 }
 
 /*

@@ -1,5 +1,6 @@
+var bonuses = [];
 
-setInterval(function(){
+var bonusInterval = setInterval(function(){
     var ch = getRandomInt(1, 3);
     switch(ch){
     	case 1:
@@ -19,6 +20,7 @@ function timeStopBonus(){
     timestop.inputEnabled = true;
     timestop.events.onInputDown.add(timeStopClicked, timestop);
     killTimeStopStatic(timestop);
+    bonuses.push(timestop);
 }
 
 function bombBonus(){
@@ -28,6 +30,7 @@ function bombBonus(){
     bomb.inputEnabled = true;
     bomb.events.onInputDown.add(bombClicked, bomb);
     killBombStatic(bomb);
+    bonuses.push(bomb);
 }
 
 
