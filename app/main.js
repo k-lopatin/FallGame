@@ -15,7 +15,8 @@ function preload() {
 
     game.load.image('stop_balls', 'assets/img/time_ellipse.png');
     game.load.image('bomb', 'assets/img/bomb.png');
-    game.load.image('life', 'assets/img/heart.png');
+    game.load.image('life', 'assets/img/life.png');
+    game.load.image('life_top', 'assets/img/life_top.png');
 
     game.load.image('restart', 'assets/img/reload.png');
 
@@ -59,7 +60,7 @@ function setLifes(){
     var style = { font: "26px Arial", fill: "#353", weight: "bold" };
     lifesText = game.add.text(GAME_WIDTH/2, 10, ''+lifes, style);
 
-    var lifesPic = game.add.sprite(GAME_WIDTH/2 - 28, 13, 'life');
+    var lifesPic = game.add.sprite(GAME_WIDTH/2 - 28, 13, 'life_top');
     lifesPic.width = 24;
     lifesPic.height = 24;
 }
